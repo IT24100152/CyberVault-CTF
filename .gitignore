@@ -1,0 +1,20 @@
+ 
+# Upstream CTFd repository
+/platform/ctfd/
+
+# Python temporary files
+__pycache__/
+*.pyc
+.venv/
+
+# Secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Local development files
+.vscode/
