@@ -1,0 +1,58 @@
+name: cybervault-ctf
+
+services:
+  ctfd:
+    build:
+      context: ../ctfd
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${CTFD_PORT:-8000}:8000"
+    environment:
+      DATABASE_URL: "mysql+pymysql://${CTFD_DB_USER}:${CTFD_DB_PASSWORD}@db/${CTFD_DB_NAME}"
+      REDIS_URL: "redis://cache:6379"
+      UPLOAD_FOLDER: /var/uploads
+      LOG_FOLDER: /var/log/CTFd
+      WORKERS: "1"
+    volumes:
+      - ctfd_uploads:/var/uploads
+      - ctfd_logs:/var/log/CTFd
+    depends_on:
+      - db
+      - cache
+    networks:
+      - backend
+
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${CTFD_DB_NAME}
+      MARIADB_USER: ${CTFD_DB_USER}
+      MARIADB_PASSWORD: ${CTFD_DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${CTFD_DB_ROOT_PASSWORD}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - backend
+
+  cache:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  ctfd_uploads:
+  ctfd_logs:
+  db_data:
+  redis_data:
