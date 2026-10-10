@@ -1,0 +1,12 @@
+CyberVault CTF - Upstream Platform Reference
+
+Platform: CTFd
+Repository: https://github.com/CTFd/CTFd
+Version Reference: 3.8.6-18-g6b01b531
+Commit: 6b01b531e8445c781a8bdcdc9409400e19207037
+
+Required source directory:
+platform/ctfd
+
+All group members must use this exact upstream commit
+to maintain consistent Docker builds.
