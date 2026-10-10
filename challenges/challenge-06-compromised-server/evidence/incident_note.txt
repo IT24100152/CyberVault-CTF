@@ -1,0 +1,5 @@
+CyberVault Incident CV-006
+A server administrator reported unexpected authentication activity.
+Review authentication events and command history.
+Identify the suspicious source address, the account involved in the privileged command,
+and the command that accessed sensitive account information.

@@ -1,0 +1,7 @@
+CYBERVAULT INCIDENT REPORT
+Case ID: CV-004
+System: Workstation-04
+Incident: A user reported that an important note was deleted.
+Investigation note: A suspicious backup reference was found.
+Reference: archive_fragment_7
+Analyst instruction: Examine all provided evidence carefully.

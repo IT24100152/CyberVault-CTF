@@ -18,3 +18,8 @@ __pycache__/
 
 # Local development files
 .vscode/
+# macOS metadata
+.DS_Store
+
+# Include synthetic authentication-log evidence for Stage 06
+!challenges/**/evidence/auth.log
