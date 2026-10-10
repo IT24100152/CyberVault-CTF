@@ -17,4 +17,4 @@ __pycache__/
 *.tmp
 
 # Local development files
-.vscode/
+.vscode/platform/deployment/.data/ 
