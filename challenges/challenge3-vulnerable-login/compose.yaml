@@ -1,0 +1,20 @@
+name: cybervault-stage03
+
+services:
+  vulnerable-login:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5001:5000"
+    environment:
+      FLASK_SECRET_KEY: "${STAGE03_FLASK_SECRET_KEY:?Set STAGE03_FLASK_SECRET_KEY}"
+    networks:
+      - stage03_network
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+networks:
+  stage03_network:
+    driver: bridge
