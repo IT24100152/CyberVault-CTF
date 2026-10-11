@@ -1,0 +1,6 @@
+Oct 10 09:14:02 server sshd[4102]: Failed password for invalid user backup from 192.0.2.45 port 51221 ssh2
+Oct 10 09:14:08 server sshd[4103]: Failed password for invalid user backup from 192.0.2.45 port 51227 ssh2
+Oct 10 09:14:16 server sshd[4104]: Failed password for root from 192.0.2.45 port 51231 ssh2
+Oct 10 09:18:41 server sshd[4210]: Accepted password for analyst from 192.0.2.80 port 51904 ssh2
+Oct 10 09:26:53 server sudo[4331]: analyst : TTY=pts/0 ; PWD=/home/analyst ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow
+Oct 10 09:31:12 server sshd[4402]: Failed password for invalid user deploy from 198.51.100.23 port 52201 ssh2

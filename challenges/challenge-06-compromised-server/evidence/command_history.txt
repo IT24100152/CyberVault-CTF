@@ -1,0 +1,6 @@
+whoami
+id
+last
+sudo cat /etc/shadow
+find /var/log -type f
+grep -i "failed password" /var/log/auth.log

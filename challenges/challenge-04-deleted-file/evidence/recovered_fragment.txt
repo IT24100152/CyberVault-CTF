@@ -1,0 +1,10 @@
+ARCHIVE RECOVERY REPORT
+Case ID: CV-004
+Workstation: Workstation-04
+Artifact Reference: archive_fragment_7
+Recovery Status: Partially recovered
+
+Investigation note:
+A fragment associated with a deleted archive was identified.
+The recovered content is incomplete in this report.
+Examine the forensic disk image to investigate the missing content.
