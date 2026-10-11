@@ -1,67 +1,58 @@
-version: '3'
+name: cybervault-ctf
 
 services:
   ctfd:
-    build: ../ctfd
-    restart: always
+    build:
+      context: ../ctfd
+      dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
-      - "${CTFD_PORT:-8000}:8000"
+      - "127.0.0.1:${CTFD_PORT:-8000}:8000"
     environment:
-      - UPLOAD_FOLDER=/var/uploads
-      - DATABASE_URL=mysql+pymysql://${MYSQL_USER:-ctfd}:${MYSQL_PASSWORD:-ctfd}@db/${MYSQL_DATABASE:-ctfd}
-      - REDIS_URL=redis://cache:6379
-      - WORKERS=1
-      - LOG_FOLDER=/var/log/CTFd
-      - ACCESS_LOG=-
-      - ERROR_LOG=-
-      - REVERSE_PROXY=true
+      DATABASE_URL: "mysql+pymysql://${CTFD_DB_USER}:${CTFD_DB_PASSWORD}@db/${CTFD_DB_NAME}"
+      REDIS_URL: "redis://cache:6379"
+      UPLOAD_FOLDER: /var/uploads
+      LOG_FOLDER: /var/log/CTFd
+      WORKERS: "1"
     volumes:
-      - .data/CTFd/logs:/var/log/CTFd
-      - .data/CTFd/uploads:/var/uploads
-      - ../ctfd:/opt/CTFd:ro
+      - ctfd_uploads:/var/uploads
+      - ctfd_logs:/var/log/CTFd
     depends_on:
-      permissions:
-        condition: service_completed_successfully
-      db:
-        condition: service_started
-      cache:
-        condition: service_started
+      - db
+      - cache
     networks:
-      default:
-      internal:
-
-  permissions:
-    image: alpine:3.23
-    user: root
-    volumes:
-      - .data/CTFd/logs:/var/log/CTFd
-      - .data/CTFd/uploads:/var/uploads
-    command: chown -R 1001:1001 /var/uploads /var/log/CTFd
+      - backend
 
   db:
     image: mariadb:10.11
-    restart: always
+    restart: unless-stopped
     environment:
-      - MARIADB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-ctfd}
-      - MARIADB_USER=${MYSQL_USER:-ctfd}
-      - MARIADB_PASSWORD=${MYSQL_PASSWORD:-ctfd}
-      - MARIADB_DATABASE=${MYSQL_DATABASE:-ctfd}
-      - MARIADB_AUTO_UPGRADE=1
+      MARIADB_DATABASE: ${CTFD_DB_NAME}
+      MARIADB_USER: ${CTFD_DB_USER}
+      MARIADB_PASSWORD: ${CTFD_DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${CTFD_DB_ROOT_PASSWORD}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - .data/mysql:/var/lib/mysql
+      - db_data:/var/lib/mysql
     networks:
-      internal:
-    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+      - backend
 
   cache:
-    image: redis:4
-    restart: always
+    image: redis:7-alpine
+    restart: unless-stopped
     volumes:
-      - .data/redis:/data
+      - redis_data:/data
     networks:
-      internal:
+      - backend
 
 networks:
-  default:
-  internal:
-    internal: true
+  backend:
+    driver: bridge
+
+volumes:
+  ctfd_uploads:
+  ctfd_logs:
+  db_data:
+  redis_data:
