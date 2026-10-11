@@ -4,8 +4,7 @@ from flask import Flask, redirect, render_template_string, request, session, url
 
 app = Flask(__name__)
 # Configure a secret key for session handling
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback-dev-secret-key-change-me")
-
+app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
 def init_db():
   conn = sqlite3.connect("users.db")
@@ -90,4 +89,4 @@ def dashboard():
 
 if __name__ == "__main__":
   init_db()
-  app.run(host="0.0.0.0", port=5000, debug=True)
+  app.run(host="127.0.0.1", port=5000, debug=False)
